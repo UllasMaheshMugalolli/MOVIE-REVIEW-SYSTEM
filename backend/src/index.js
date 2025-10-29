@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 
 // Import route files
+const authRouter = require('./routes/auth');
 const moviesRouter = require('./routes/movies');
 const ratingsRouter = require('./routes/ratings');
 const personsRouter = require('./routes/persons');
@@ -22,6 +23,7 @@ app.get('/', (req, res) => {
 });
 
 // Mount route handlers
+app.use('/api/auth', authRouter);
 app.use('/api/movies', moviesRouter);
 app.use('/api/ratings', ratingsRouter);
 app.use('/api/persons', personsRouter);

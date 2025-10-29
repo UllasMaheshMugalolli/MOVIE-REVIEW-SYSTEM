@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { authenticateToken } = require('../middleware/auth');
 
-// POST /api/ratings - Submit a new rating
-router.post('/', async (req, res) => {
-  const { movie_id, user_id, numeric_rating, verbal_rating } = req.body;
+// POST /api/ratings - Submit a new rating (PROTECTED - requires authentication)
+router.post('/', authenticateToken, async (req, res) => {
+  const { movie_id, numeric_rating, verbal_rating } = req.body;
+  const user_id = req.user.user_id; // Get user_id from JWT token
 
   if (!movie_id || !numeric_rating) {
     return res.status(400).json({ error: 'movie_id and numeric_rating are required' });
@@ -22,7 +24,7 @@ router.post('/', async (req, res) => {
     const [result] = await pool.query(
       `INSERT INTO Rating (rating_id, movie_id, user_id, rating_date, numeric_rating, verbal_rating)
        VALUES (?, ?, ?, CURDATE(), ?, ?)`,
-      [rating_id, movie_id, user_id || null, numeric_rating, verbal_rating || null]
+      [rating_id, movie_id, user_id, numeric_rating, verbal_rating || null]
     );
 
     res.status(201).json({ 
