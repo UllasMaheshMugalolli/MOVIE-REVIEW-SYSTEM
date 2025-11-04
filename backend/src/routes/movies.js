@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
+const { authenticateAdmin } = require('../middleware/adminAuth');
 
 // GET /api/movies - List all movies
 router.get('/', async (req, res) => {
@@ -63,8 +64,8 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// POST /api/movies - Add a new movie (simple version - can be expanded)
-router.post('/', async (req, res) => {
+// POST /api/movies - Add a new movie (ADMIN ONLY)
+router.post('/', authenticateAdmin, async (req, res) => {
   const { title, release_date } = req.body;
 
   if (!title || !release_date) {
@@ -94,8 +95,8 @@ router.post('/', async (req, res) => {
   }
 });
 
-// PUT /api/movies/:id - Update a movie
-router.put('/:id', async (req, res) => {
+// PUT /api/movies/:id - Update a movie (ADMIN ONLY)
+router.put('/:id', authenticateAdmin, async (req, res) => {
   const movie_id = req.params.id;
   const { title, release_date } = req.body;
 
@@ -141,8 +142,8 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DELETE /api/movies/:id - Delete a movie
-router.delete('/:id', async (req, res) => {
+// DELETE /api/movies/:id - Delete a movie (ADMIN ONLY)
+router.delete('/:id', authenticateAdmin, async (req, res) => {
   const movie_id = req.params.id;
 
   try {
@@ -200,6 +201,54 @@ router.get('/:id/rating', async (req, res) => {
       total_ratings: totalRatings,
       ratings: ratings,
       trigger_working: movie.avg_rating == calculatedAvg // Compare if trigger result matches manual calculation
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// GET /api/movies/stats - Get aggregate statistics
+router.get('/stats/aggregate', async (req, res) => {
+  try {
+    // Total movies
+    const [[{ totalMovies }]] = await pool.query(
+      'SELECT COUNT(*) as totalMovies FROM Movie'
+    );
+    
+    // Average rating across all movies
+    const [[{ avgRating }]] = await pool.query(
+      'SELECT AVG(avg_rating) as avgRating FROM Movie WHERE avg_rating > 0'
+    );
+    
+    // Total ratings submitted
+    const [[{ totalRatings }]] = await pool.query(
+      'SELECT COUNT(*) as totalRatings FROM Rating'
+    );
+    
+    // Total users
+    const [[{ totalUsers }]] = await pool.query(
+      'SELECT COUNT(*) as totalUsers FROM UserTable'
+    );
+    
+    // Revenue statistics
+    const [[revenueStats]] = await pool.query(
+      `SELECT 
+        COUNT(*) as moviesWithRevenue,
+        AVG(investment) as avgInvestment,
+        AVG(outcome_revenue) as avgRevenue,
+        AVG(outcome_revenue - investment) as avgProfit,
+        SUM(investment) as totalInvestment,
+        SUM(outcome_revenue) as totalRevenue
+      FROM Revenue`
+    );
+    
+    res.json({
+      totalMovies,
+      avgRating: avgRating ? parseFloat(avgRating).toFixed(1) : 0,
+      totalRatings,
+      totalUsers,
+      ...revenueStats
     });
   } catch (err) {
     console.error(err);

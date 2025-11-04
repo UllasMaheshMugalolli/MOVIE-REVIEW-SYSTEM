@@ -40,9 +40,9 @@ router.post('/register', async (req, res) => {
       [user_id, username, email, hashedPassword]
     );
 
-    // Generate JWT token
+    // Generate JWT token (new users are not admin by default)
     const token = jwt.sign(
-      { user_id, username },
+      { user_id, username, is_admin: false },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -50,7 +50,7 @@ router.post('/register', async (req, res) => {
     res.status(201).json({
       message: 'User registered successfully',
       token,
-      user: { user_id, username, email }
+      user: { user_id, username, email, is_admin: false }
     });
   } catch (err) {
     console.error(err);
@@ -66,32 +66,32 @@ router.post('/register', async (req, res) => {
 
 // POST /api/auth/login - Login user
 router.post('/login', async (req, res) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+  if (!email || !password) {
+    return res.status(400).json({ error: 'Email and password are required' });
   }
 
   try {
     const [[user]] = await pool.query(
-      'SELECT user_id, username, email, password FROM UserTable WHERE username = ?',
-      [username]
+      'SELECT user_id, username, email, password, is_admin FROM UserTable WHERE email = ?',
+      [email]
     );
 
     if (!user) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Compare password
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Invalid username or password' });
+      return res.status(401).json({ error: 'Invalid email or password' });
     }
 
     // Generate JWT token
     const token = jwt.sign(
-      { user_id: user.user_id, username: user.username },
+      { user_id: user.user_id, username: user.username, is_admin: !!user.is_admin },
       process.env.JWT_SECRET,
       { expiresIn: '7d' }
     );
@@ -99,7 +99,12 @@ router.post('/login', async (req, res) => {
     res.json({
       message: 'Login successful',
       token,
-      user: { user_id: user.user_id, username: user.username, email: user.email }
+      user: { 
+        user_id: user.user_id, 
+        username: user.username, 
+        email: user.email,
+        is_admin: !!user.is_admin 
+      }
     });
   } catch (err) {
     console.error(err);

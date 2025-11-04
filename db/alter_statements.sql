@@ -9,5 +9,7 @@ ALTER TABLE UserTable
 ADD COLUMN email VARCHAR(255) UNIQUE,
 ADD COLUMN password VARCHAR(255);
 
+ALTER TABLE UserTable ADD COLUMN is_admin BOOLEAN DEFAULT FALSE;
+
 -- Verify the changes
 DESCRIBE UserTable;

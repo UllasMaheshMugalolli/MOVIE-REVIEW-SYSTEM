@@ -1,0 +1,1290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Review System - Frontend Documentation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2563eb;
+            font-size: 36px;
+            margin-bottom: 10px;
+            border-bottom: 4px solid #2563eb;
+            padding-bottom: 10px;
+        }
+        
+        h2 {
+            color: #1e40af;
+            font-size: 28px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 5px solid #2563eb;
+            padding-left: 15px;
+        }
+        
+        h3 {
+            color: #1e3a8a;
+            font-size: 22px;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        h4 {
+            color: #1e293b;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        
+        code {
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #dc2626;
+        }
+        
+        pre {
+            background: #1e293b;
+            color: #e2e8f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            border-left: 4px solid #2563eb;
+        }
+        
+        pre code {
+            background: none;
+            color: #e2e8f0;
+            padding: 0;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .note {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .warning {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .success {
+            background: #d1fae5;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        tr:hover {
+            background: #f9fafb;
+        }
+        
+        .feature-box {
+            border: 2px solid #e5e7eb;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+        
+        .page-break {
+            page-break-after: always;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎬 Movie Review System</h1>
+        <p class="subtitle">Complete Frontend Architecture & Implementation Guide</p>
+        
+        <div class="note">
+            <strong>📘 Documentation Overview</strong><br>
+            This document provides a comprehensive explanation of the Movie Review System frontend built with Next.js. It covers the project structure, key components, page functionality, state management, authentication flow, and admin features.
+        </div>
+
+        <!-- TABLE OF CONTENTS -->
+        <h2>📑 Table of Contents</h2>
+        <ol>
+            <li><a href="#architecture">Frontend Architecture Overview</a></li>
+            <li><a href="#structure">Project Structure</a></li>
+            <li><a href="#core">Core Configuration Files</a></li>
+            <li><a href="#utils">Utility Functions</a></li>
+            <li><a href="#components">Reusable Components</a></li>
+            <li><a href="#public-pages">Public Pages</a></li>
+            <li><a href="#protected-pages">Protected Pages</a></li>
+            <li><a href="#admin-pages">Admin Pages</a></li>
+            <li><a href="#styling">Styling System</a></li>
+            <li><a href="#flow">Application Flow</a></li>
+        </ol>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 1: ARCHITECTURE -->
+        <h2 id="architecture">1. Frontend Architecture Overview</h2>
+        
+        <h3>🏗️ Technology Stack</h3>
+        <ul>
+            <li><strong>Framework:</strong> Next.js 16.0.1 (React-based framework with SSR/SSG capabilities)</li>
+            <li><strong>React Version:</strong> 19.2.0</li>
+            <li><strong>Routing:</strong> Next.js file-based routing system</li>
+            <li><strong>State Management:</strong> React Hooks (useState, useEffect)</li>
+            <li><strong>Styling:</strong> Custom CSS with CSS Variables for theming</li>
+            <li><strong>Authentication:</strong> JWT (JSON Web Tokens) stored in localStorage</li>
+            <li><strong>HTTP Client:</strong> Native Fetch API</li>
+        </ul>
+
+        <h3>🎯 Key Design Principles</h3>
+        <ol>
+            <li><strong>Component-Based Architecture:</strong> Reusable components (Navbar, Footer, MovieCard) used across pages</li>
+            <li><strong>Client-Side Authentication:</strong> JWT tokens parsed on the client to determine user permissions</li>
+            <li><strong>Protected Routes:</strong> useEffect hooks check authentication status and redirect unauthorized users</li>
+            <li><strong>API Communication:</strong> Centralized API URL configuration via environment variables</li>
+            <li><strong>Responsive Design:</strong> CSS-based responsive layouts for mobile and desktop</li>
+            <li><strong>Dark Theme:</strong> Modern dark UI with blue accent colors</li>
+        </ol>
+
+        <div class="note">
+            <strong>💡 Why Next.js?</strong><br>
+            Next.js provides automatic code splitting, optimized page loading, file-based routing, and excellent developer experience. It's perfect for this project as it allows both static and dynamic pages while maintaining simplicity.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 2: PROJECT STRUCTURE -->
+        <h2 id="structure">2. Project Structure</h2>
+
+        <pre><code>frontend/
+│
+├── pages/                    # Next.js pages (auto-routed)
+│   ├── _app.js              # Root application component
+│   ├── index.js             # Homepage (/)
+│   ├── login.js             # Login page (/login)
+│   ├── signup.js            # Registration page (/signup)
+│   ├── movies.js            # Movies list page (/movies)
+│   ├── reports.js           # Reports page (/reports)
+│   │
+│   ├── movies/              # Dynamic movie routes
+│   │   └── [id].js         # Movie detail page (/movies/:id)
+│   │
+│   ├── persons/             # Dynamic person routes
+│   │   └── [id].js         # Person detail page (/persons/:id)
+│   │
+│   └── admin/               # Admin dashboard pages
+│       ├── index.js         # Admin dashboard home (/admin)
+│       ├── movies.js        # Manage movies (/admin/movies)
+│       ├── persons.js       # Manage persons (/admin/persons)
+│       ├── cast-crew.js     # Assign cast & crew (/admin/cast-crew)
+│       ├── genres.js        # Manage genres (/admin/genres)
+│       └── revenue.js       # Manage revenue (/admin/revenue)
+│
+├── components/              # Reusable UI components
+│   ├── Navbar.js           # Navigation bar
+│   ├── Footer.js           # Footer component
+│   ├── MovieCard.js        # Movie card for grid display
+│   ├── LandingHero.js      # Landing page hero section
+│   └── AuthLayout.js       # Authentication pages layout
+│
+├── utils/                   # Utility functions
+│   └── auth.js             # Authentication helpers
+│
+├── styles/                  # Global styles
+│   └── globals.css         # Global CSS with variables
+│
+├── public/                  # Static assets
+│
+├── package.json            # Dependencies
+└── .env.local              # Environment variables</code></pre>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 3: CORE FILES -->
+        <h2 id="core">3. Core Configuration Files</h2>
+
+        <h3>📄 _app.js - Application Root</h3>
+        <p><strong>Purpose:</strong> The root component that wraps all pages. It's where global configurations and styles are applied.</p>
+
+        <pre><code>import '../styles/globals.css'
+import Head from 'next/head'
+
+export default function App({ Component, pageProps }) {
+  return (
+    &lt;&gt;
+      &lt;Head&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+        &lt;title&gt;Movie Review System&lt;/title&gt;
+      &lt;/Head&gt;
+      &lt;Component {...pageProps} /&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+
+        <h4>What's Happening:</h4>
+        <ul>
+            <li><strong>Component:</strong> Represents the active page component based on the current route</li>
+            <li><strong>pageProps:</strong> Props passed to the page (empty in our case, but useful for SSR/SSG)</li>
+            <li><strong>Head:</strong> Next.js component to modify the HTML <code>&lt;head&gt;</code> tag</li>
+            <li><strong>Global CSS:</strong> Imported here to apply styles across all pages</li>
+        </ul>
+
+        <div class="note">
+            <strong>🔍 Why This Matters:</strong><br>
+            _app.js runs on every page navigation. It's the perfect place for global imports, authentication wrappers, or context providers. We keep it minimal since we handle auth per-page.
+        </div>
+
+        <h3>🌍 Environment Variables</h3>
+        <p>The frontend uses <code>.env.local</code> to configure the API URL:</p>
+        <pre><code>NEXT_PUBLIC_API_URL=http://localhost:4000</code></pre>
+        
+        <p>This is accessed in pages as:</p>
+        <pre><code>const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'</code></pre>
+
+        <div class="warning">
+            <strong>⚠️ Important:</strong> In Next.js, environment variables must be prefixed with <code>NEXT_PUBLIC_</code> to be accessible in the browser. Variables without this prefix are only available server-side.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 4: UTILITIES -->
+        <h2 id="utils">4. Utility Functions</h2>
+
+        <h3>🔐 utils/auth.js - Authentication Helpers</h3>
+        <p><strong>Purpose:</strong> Provides reusable functions to extract user information from JWT tokens.</p>
+
+        <pre><code>// Check if user is admin
+export const isUserAdmin = () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return false;
+    
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.is_admin === true;
+  } catch (e) {
+    return false;
+  }
+};
+
+// Get full user info from token
+export const getUserInfo = () => {
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+    
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return {
+      user_id: payload.user_id,
+      username: payload.username,
+      is_admin: payload.is_admin || false
+    };
+  } catch (e) {
+    return null;
+  }
+};</code></pre>
+
+        <h4>How JWT Decoding Works:</h4>
+        <ol>
+            <li><strong>JWT Structure:</strong> A JWT has 3 parts separated by dots: <code>header.payload.signature</code></li>
+            <li><strong>token.split('.')[1]:</strong> Extracts the payload (middle part)</li>
+            <li><strong>atob():</strong> Decodes the Base64-encoded payload</li>
+            <li><strong>JSON.parse():</strong> Converts the JSON string to a JavaScript object</li>
+        </ol>
+
+        <div class="feature-box">
+            <h4>🎯 Use Cases:</h4>
+            <ul>
+                <li><strong>isUserAdmin():</strong> Used in Navbar to show/hide Admin link</li>
+                <li><strong>getUserInfo():</strong> Used in admin pages to verify permissions before rendering</li>
+                <li><strong>Error Handling:</strong> Try-catch ensures corrupted tokens don't crash the app</li>
+            </ul>
+        </div>
+
+        <div class="note">
+            <strong>🔒 Security Note:</strong><br>
+            JWT tokens are decoded on the client, but the actual authorization happens on the backend. The frontend only uses this to show/hide UI elements. The backend validates the token signature for every protected API call.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 5: COMPONENTS -->
+        <h2 id="components">5. Reusable Components</h2>
+
+        <h3>🧭 Navbar Component</h3>
+        <p><strong>File:</strong> <code>components/Navbar.js</code></p>
+        <p><strong>Purpose:</strong> Sticky navigation bar that adapts based on authentication state.</p>
+
+        <h4>Props:</h4>
+        <table>
+            <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>isLoggedIn</td>
+                <td>Boolean</td>
+                <td>Shows authenticated nav items if true</td>
+            </tr>
+            <tr>
+                <td>isAdmin</td>
+                <td>Boolean</td>
+                <td>Shows Admin link if true</td>
+            </tr>
+            <tr>
+                <td>onLogout</td>
+                <td>Function</td>
+                <td>Callback function to handle logout</td>
+            </tr>
+        </table>
+
+        <h4>Key Features:</h4>
+        <ul>
+            <li><strong>Sticky Position:</strong> Stays at top when scrolling (<code>position: sticky</code>)</li>
+            <li><strong>Glassmorphism Effect:</strong> Semi-transparent background with blur effect</li>
+            <li><strong>Conditional Rendering:</strong> Shows different links based on auth state</li>
+            <li><strong>Admin Badge:</strong> Special styling for admin link with gear icon</li>
+        </ul>
+
+        <pre><code>// Conditional rendering example
+{isLoggedIn ? (
+  // Show: Movies, Reports, Admin (if admin), Logout
+  &lt;&gt;
+    &lt;Link href="/movies"&gt;Movies&lt;/Link&gt;
+    &lt;Link href="/reports"&gt;Reports&lt;/Link&gt;
+    {isAdmin && &lt;Link href="/admin"&gt;⚙️ Admin&lt;/Link&gt;}
+    &lt;button onClick={onLogout}&gt;Logout&lt;/button&gt;
+  &lt;/&gt;
+) : (
+  // Show: Sign In, Sign Up
+  &lt;&gt;
+    &lt;Link href="/login"&gt;Sign In&lt;/Link&gt;
+    &lt;Link href="/signup"&gt;Sign Up&lt;/Link&gt;
+  &lt;/&gt;
+)}</code></pre>
+
+        <h3>🎬 MovieCard Component</h3>
+        <p><strong>File:</strong> <code>components/MovieCard.js</code></p>
+        <p><strong>Purpose:</strong> Display individual movie information in a card format.</p>
+
+        <h4>Props:</h4>
+        <table>
+            <tr>
+                <th>Prop</th>
+                <th>Type</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>movie</td>
+                <td>Object</td>
+                <td>Movie data (movie_id, title, release_date, avg_rating)</td>
+            </tr>
+        </table>
+
+        <h4>What It Displays:</h4>
+        <ul>
+            <li>Movie title with hover effect</li>
+            <li>Release date formatted nicely</li>
+            <li>Average rating with stars (⭐)</li>
+            <li>Links to detail page on click</li>
+        </ul>
+
+        <h3>📄 Footer Component</h3>
+        <p><strong>File:</strong> <code>components/Footer.js</code></p>
+        <p><strong>Purpose:</strong> Simple footer with copyright information.</p>
+        <p>Displays: "© 2025 Movie Review System. Built with Next.js & Express."</p>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 6: PUBLIC PAGES -->
+        <h2 id="public-pages">6. Public Pages</h2>
+
+        <h3>🏠 Homepage (index.js)</h3>
+        <p><strong>Route:</strong> <code>/</code></p>
+        <p><strong>Purpose:</strong> Landing page that shows hero section for guests or redirects to movies for logged-in users.</p>
+
+        <h4>Page Flow:</h4>
+        <pre><code>useEffect(() => {
+  const token = localStorage.getItem('token');
+  setIsLoggedIn(!!token);
+  
+  if (token) {
+    const userInfo = getUserInfo();
+    if (userInfo) {
+      setIsAdmin(userInfo.is_admin || false);
+    }
+  }
+}, []);</code></pre>
+
+        <h4>What's Happening:</h4>
+        <ol>
+            <li><strong>useEffect on Mount:</strong> Runs once when page loads</li>
+            <li><strong>Check Token:</strong> Looks for JWT in localStorage</li>
+            <li><strong>Set Login State:</strong> Updates <code>isLoggedIn</code> state</li>
+            <li><strong>Extract Admin Status:</strong> Parses token to get <code>is_admin</code> flag</li>
+            <li><strong>Pass to Navbar:</strong> Navbar shows appropriate links</li>
+        </ol>
+
+        <h4>Conditional Rendering:</h4>
+        <ul>
+            <li><strong>If Logged Out:</strong> Shows LandingHero component with welcome message</li>
+            <li><strong>If Logged In:</strong> Shows quick stats and link to browse movies</li>
+        </ul>
+
+        <h3>🔑 Login Page (login.js)</h3>
+        <p><strong>Route:</strong> <code>/login</code></p>
+        <p><strong>Purpose:</strong> User authentication page.</p>
+
+        <h4>Form Fields:</h4>
+        <ul>
+            <li>Email (type: email, required)</li>
+            <li>Password (type: password, required)</li>
+        </ul>
+
+        <h4>Submit Handler:</h4>
+        <pre><code>const handleSubmit = async (e) => {
+  e.preventDefault(); // Prevent page reload
+  setMessage(''); // Clear previous messages
+  
+  try {
+    const res = await fetch(`${apiUrl}/api/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    
+    // Store token in localStorage
+    localStorage.setItem('token', data.token);
+    
+    // Redirect to homepage
+    router.push('/');
+  } catch (err) {
+    setMessage(err.message);
+  }
+};</code></pre>
+
+        <h4>Success Flow:</h4>
+        <ol>
+            <li>User submits email and password</li>
+            <li>Frontend sends POST request to <code>/api/auth/login</code></li>
+            <li>Backend validates credentials and returns JWT token</li>
+            <li>Frontend stores token in localStorage</li>
+            <li>User is redirected to homepage</li>
+        </ol>
+
+        <div class="note">
+            <strong>🔐 Token Storage:</strong><br>
+            JWT is stored in localStorage with key <code>'token'</code>. This persists across page reloads but is cleared when user logs out or clears browser data.
+        </div>
+
+        <h3>📝 Signup Page (signup.js)</h3>
+        <p><strong>Route:</strong> <code>/signup</code></p>
+        <p><strong>Purpose:</strong> New user registration.</p>
+
+        <h4>Form Fields:</h4>
+        <ul>
+            <li>Username (unique identifier)</li>
+            <li>Email (must be valid email format)</li>
+            <li>Password (minimum length usually enforced)</li>
+        </ul>
+
+        <h4>Registration Flow:</h4>
+        <ol>
+            <li>User fills registration form</li>
+            <li>POST request to <code>/api/auth/register</code></li>
+            <li>Backend creates user with <code>is_admin: false</code> by default</li>
+            <li>Backend returns JWT token</li>
+            <li>Token stored and user redirected to homepage</li>
+        </ol>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 7: PROTECTED PAGES -->
+        <h2 id="protected-pages">7. Protected Pages</h2>
+
+        <h3>🎥 Movies List Page (movies.js)</h3>
+        <p><strong>Route:</strong> <code>/movies</code></p>
+        <p><strong>Protection:</strong> Requires login</p>
+
+        <h4>Authentication Guard:</h4>
+        <pre><code>useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    router.push('/login'); // Redirect to login if no token
+    return;
+  }
+  setIsLoggedIn(true);
+  fetchMovies(); // Load movies
+}, []);</code></pre>
+
+        <h4>Data Fetching:</h4>
+        <pre><code>const fetchMovies = async () => {
+  try {
+    const res = await fetch(`${apiUrl}/api/movies`);
+    if (res.ok) {
+      const data = await res.json();
+      setMovies(data);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};</code></pre>
+
+        <h4>Display Logic:</h4>
+        <ul>
+            <li><strong>Grid Layout:</strong> Movies displayed in responsive grid</li>
+            <li><strong>MovieCard Component:</strong> Each movie rendered as a card</li>
+            <li><strong>Click Handler:</strong> Clicking a card navigates to <code>/movies/:id</code></li>
+        </ul>
+
+        <h3>📊 Movie Detail Page (movies/[id].js)</h3>
+        <p><strong>Route:</strong> <code>/movies/:id</code></p>
+        <p><strong>Purpose:</strong> Show detailed information about a specific movie.</p>
+
+        <h4>Dynamic Route Parameter:</h4>
+        <pre><code>const router = useRouter();
+const { id } = router.query; // Extract movie_id from URL</code></pre>
+
+        <h4>Data to Fetch:</h4>
+        <ol>
+            <li><strong>Movie Details:</strong> GET <code>/api/movies/:id</code></li>
+            <li><strong>Genres:</strong> GET <code>/api/genres/movie/:id</code></li>
+            <li><strong>Cast & Crew:</strong> GET <code>/api/persons/movie/:id</code></li>
+            <li><strong>Ratings:</strong> GET <code>/api/ratings/movie/:id</code></li>
+        </ol>
+
+        <h4>Rating Form:</h4>
+        <p>Users can submit their own rating (1-5) for the movie:</p>
+        <pre><code>const handleRatingSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  
+  await fetch(`${apiUrl}/api/ratings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}` // JWT required
+    },
+    body: JSON.stringify({
+      movie_id: parseInt(id),
+      rating_value: rating,
+      comment: comment || null
+    })
+  });
+  
+  fetchRatings(); // Refresh ratings list
+};</code></pre>
+
+        <h4>Edit/Delete Ratings:</h4>
+        <p>Users can edit or delete their own ratings. The page checks if the rating's <code>user_id</code> matches the logged-in user's ID.</p>
+
+        <div class="success">
+            <strong>✅ Key Feature:</strong> The average rating is automatically updated by a database trigger whenever a rating is added, edited, or deleted. The frontend just displays the current value.
+        </div>
+
+        <h3>👤 Person Detail Page (persons/[id].js)</h3>
+        <p><strong>Route:</strong> <code>/persons/:id</code></p>
+        <p><strong>Purpose:</strong> Show information about an actor/director/producer.</p>
+
+        <h4>Information Displayed:</h4>
+        <ul>
+            <li>Person name</li>
+            <li>Date of birth</li>
+            <li>Gender (converted to readable format: M→Male, F→Female, O→Other)</li>
+            <li>Age (calculated using <code>GetPersonAge</code> database function)</li>
+            <li>List of movies they worked on with their role</li>
+        </ul>
+
+        <h4>Age Calculation:</h4>
+        <pre><code>const fetchPersonAge = async () => {
+  const res = await fetch(`${apiUrl}/api/persons/age/${id}`);
+  const data = await res.json();
+  setAge(data.age);
+};</code></pre>
+
+        <p>This calls the backend endpoint which executes the MySQL stored function <code>GetPersonAge(person_id)</code>.</p>
+
+        <h3>📈 Reports Page (reports.js)</h3>
+        <p><strong>Route:</strong> <code>/reports</code></p>
+        <p><strong>Purpose:</strong> Show analytical reports like top-rated movies and movie profit calculations.</p>
+
+        <h4>Features:</h4>
+        <ul>
+            <li><strong>Top-Rated Movies:</strong> Lists movies sorted by avg_rating</li>
+            <li><strong>Profit Calculator:</strong> User enters movie name, calls <code>GetMovieProfit</code> stored procedure</li>
+            <li>Displays investment, revenue, and calculated profit/loss</li>
+        </ul>
+
+        <h4>Profit Calculation:</h4>
+        <pre><code>const handleProfitSearch = async (e) => {
+  e.preventDefault();
+  const res = await fetch(
+    `${apiUrl}/api/movies/profit/${encodeURIComponent(movieName)}`
+  );
+  const data = await res.json();
+  setProfitData(data); // Shows investment, revenue, profit
+};</code></pre>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 8: ADMIN PAGES -->
+        <h2 id="admin-pages">8. Admin Pages (Protected)</h2>
+
+        <h3>🔒 Admin Access Control</h3>
+        <p>All admin pages use this protection pattern:</p>
+        <pre><code>useEffect(() => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    router.push('/login');
+    return;
+  }
+  
+  const userInfo = getUserInfo();
+  if (!userInfo || !userInfo.is_admin) {
+    alert('Access denied');
+    router.push('/');
+    return;
+  }
+  
+  setIsLoggedIn(true);
+  setIsAdmin(true);
+  // Load admin data...
+}, []);</code></pre>
+
+        <h4>Double-Check Security:</h4>
+        <ol>
+            <li><strong>Frontend Check:</strong> Prevents UI from loading for non-admins</li>
+            <li><strong>Backend Check:</strong> <code>authenticateAdmin</code> middleware validates every API request</li>
+        </ol>
+
+        <h3>🏠 Admin Dashboard (admin/index.js)</h3>
+        <p><strong>Route:</strong> <code>/admin</code></p>
+        <p><strong>Purpose:</strong> Central hub for all admin operations.</p>
+
+        <h4>Dashboard Sections:</h4>
+        <table>
+            <tr>
+                <th>Card</th>
+                <th>Description</th>
+                <th>Link</th>
+            </tr>
+            <tr>
+                <td>🎬 Manage Movies</td>
+                <td>Add, edit, delete movies</td>
+                <td>/admin/movies</td>
+            </tr>
+            <tr>
+                <td>👥 Manage Persons</td>
+                <td>Add, edit, delete actors/directors</td>
+                <td>/admin/persons</td>
+            </tr>
+            <tr>
+                <td>🎭 Cast & Crew</td>
+                <td>Assign persons to movies with roles</td>
+                <td>/admin/cast-crew</td>
+            </tr>
+            <tr>
+                <td>🏷️ Manage Genres</td>
+                <td>Create genres and assign to movies</td>
+                <td>/admin/genres</td>
+            </tr>
+            <tr>
+                <td>💰 Revenue Data</td>
+                <td>Add/update financial information</td>
+                <td>/admin/revenue</td>
+            </tr>
+        </table>
+
+        <h4>Stats Display:</h4>
+        <p>The dashboard fetches and displays key statistics:</p>
+        <ul>
+            <li>Total Movies</li>
+            <li>Total Ratings</li>
+            <li>Total Users</li>
+            <li>Movies with Revenue Data</li>
+        </ul>
+
+        <h3>🎬 Manage Movies (admin/movies.js)</h3>
+        <p><strong>Route:</strong> <code>/admin/movies</code></p>
+
+        <h4>CRUD Operations:</h4>
+        <table>
+            <tr>
+                <th>Operation</th>
+                <th>Method</th>
+                <th>Endpoint</th>
+            </tr>
+            <tr>
+                <td>List All</td>
+                <td>GET</td>
+                <td>/api/movies</td>
+            </tr>
+            <tr>
+                <td>Add Movie</td>
+                <td>POST</td>
+                <td>/api/movies</td>
+            </tr>
+            <tr>
+                <td>Edit Movie</td>
+                <td>PUT</td>
+                <td>/api/movies/:id</td>
+            </tr>
+            <tr>
+                <td>Delete Movie</td>
+                <td>DELETE</td>
+                <td>/api/movies/:id</td>
+            </tr>
+        </table>
+
+        <h4>UI Pattern:</h4>
+        <ol>
+            <li><strong>Table View:</strong> Shows all movies with actions</li>
+            <li><strong>Add Button:</strong> Opens modal form</li>
+            <li><strong>Edit Icon:</strong> Populates modal with existing data</li>
+            <li><strong>Delete Icon:</strong> Shows confirmation, then deletes</li>
+        </ol>
+
+        <h4>Modal Form:</h4>
+        <pre><code>{showModal && (
+  &lt;div style={modalOverlayStyle}&gt;
+    &lt;div style={modalContentStyle}&gt;
+      &lt;h3&gt;{editMovie ? 'Edit Movie' : 'Add Movie'}&lt;/h3&gt;
+      &lt;form onSubmit={handleSubmit}&gt;
+        &lt;input type="text" value={formData.title} /&gt;
+        &lt;input type="date" value={formData.release_date} /&gt;
+        &lt;button type="submit"&gt;Save&lt;/button&gt;
+      &lt;/form&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+)}</code></pre>
+
+        <h3>👥 Manage Persons (admin/persons.js)</h3>
+        <p><strong>Route:</strong> <code>/admin/persons</code></p>
+
+        <h4>Form Fields:</h4>
+        <ul>
+            <li><strong>Name:</strong> Person's full name (required)</li>
+            <li><strong>Date of Birth:</strong> Date picker (required)</li>
+            <li><strong>Gender:</strong> Dropdown with values 'M', 'F', 'O' (required)</li>
+        </ul>
+
+        <h4>Gender Display Logic:</h4>
+        <pre><code>// In form dropdown:
+&lt;select value={formData.gender}&gt;
+  &lt;option value="M"&gt;Male&lt;/option&gt;
+  &lt;option value="F"&gt;Female&lt;/option&gt;
+  &lt;option value="O"&gt;Other&lt;/option&gt;
+&lt;/select&gt;
+
+// In table display:
+{person.gender === 'M' ? 'Male' : 
+ person.gender === 'F' ? 'Female' : 
+ person.gender === 'O' ? 'Other' : 'N/A'}</code></pre>
+
+        <div class="note">
+            <strong>📝 Database Constraint:</strong><br>
+            The Person table has <code>gender CHAR(1) CHECK (gender IN ('M','F','O'))</code>. The form must send single-character values ('M'/'F'/'O'), but displays full words for better UX.
+        </div>
+
+        <h3>🎭 Cast & Crew Assignment (admin/cast-crew.js)</h3>
+        <p><strong>Route:</strong> <code>/admin/cast-crew</code></p>
+        <p><strong>Purpose:</strong> Link persons to movies with specific roles.</p>
+
+        <h4>Form Fields:</h4>
+        <ol>
+            <li><strong>Movie Selector:</strong> Dropdown of all movies</li>
+            <li><strong>Person Selector:</strong> Dropdown of all persons</li>
+            <li><strong>Role Selector:</strong> Choose Actor, Director, or Producer</li>
+        </ol>
+
+        <h4>Submit Logic:</h4>
+        <pre><code>const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  
+  await fetch(`${apiUrl}/api/persons/movie-role`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      movie_id: selectedMovie,
+      person_id: selectedPerson,
+      role_name: role
+    })
+  });
+};</code></pre>
+
+        <h4>Relationship Table:</h4>
+        <p>This creates entries in the <code>Movie_Person_Relationships</code> table, establishing many-to-many relationships between movies and persons.</p>
+
+        <h3>🏷️ Manage Genres (admin/genres.js)</h3>
+        <p><strong>Route:</strong> <code>/admin/genres</code></p>
+
+        <h4>Two-Column Layout:</h4>
+        <table>
+            <tr>
+                <th>Left Column</th>
+                <th>Right Column</th>
+            </tr>
+            <tr>
+                <td>Create new genre</td>
+                <td>Assign genre to movie</td>
+            </tr>
+            <tr>
+                <td>Shows list of all genres</td>
+                <td>Movie + Genre dropdowns</td>
+            </tr>
+        </table>
+
+        <h4>Create Genre:</h4>
+        <pre><code>const handleCreateGenre = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  
+  await fetch(`${apiUrl}/api/genres`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({ genre_name: newGenre })
+  });
+};</code></pre>
+
+        <h4>Assign Genre to Movie:</h4>
+        <pre><code>const handleAssignGenre = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  
+  await fetch(`${apiUrl}/api/genres/movie`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      movie_id: selectedMovie,
+      genre_id: selectedGenre
+    })
+  });
+};</code></pre>
+
+        <h3>💰 Revenue Management (admin/revenue.js)</h3>
+        <p><strong>Route:</strong> <code>/admin/revenue</code></p>
+
+        <h4>Workflow:</h4>
+        <ol>
+            <li><strong>Select Movie:</strong> Dropdown triggers check if revenue exists</li>
+            <li><strong>Load Existing Data:</strong> If revenue exists, populate form</li>
+            <li><strong>Fill Form:</strong> Investment and Outcome Revenue fields</li>
+            <li><strong>Calculate Profit:</strong> Real-time calculation displayed</li>
+            <li><strong>Submit:</strong> POST (new) or PUT (update) based on existence</li>
+        </ol>
+
+        <h4>Real-Time Profit Calculation:</h4>
+        <pre><code>const profit = formData.investment && formData.outcome_revenue
+  ? parseFloat(formData.outcome_revenue) - parseFloat(formData.investment)
+  : null;
+
+{profit !== null && (
+  &lt;div style={{ 
+    color: profit >= 0 ? '#10b981' : '#ef4444' 
+  }}&gt;
+    ${profit.toLocaleString()}
+  &lt;/div&gt;
+)}</code></pre>
+
+        <h4>Smart Submit Handler:</h4>
+        <pre><code>const handleSubmit = async (e) => {
+  e.preventDefault();
+  const token = localStorage.getItem('token');
+  
+  const method = revenueData ? 'PUT' : 'POST';
+  const url = revenueData 
+    ? `${apiUrl}/api/revenue/${selectedMovie}`
+    : `${apiUrl}/api/revenue`;
+  
+  const body = revenueData 
+    ? formData
+    : { ...formData, movie_id: parseInt(selectedMovie) };
+  
+  await fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    },
+    body: JSON.stringify(body)
+  });
+};</code></pre>
+
+        <div class="success">
+            <strong>✅ Smart Feature:</strong> The form automatically detects if revenue data exists and switches between POST (create) and PUT (update) accordingly.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 9: STYLING -->
+        <h2 id="styling">9. Styling System</h2>
+
+        <h3>🎨 CSS Variables (globals.css)</h3>
+        <p>The entire application uses a consistent dark theme defined by CSS custom properties:</p>
+
+        <pre><code>:root {
+  --bg: #0a0e1a;           /* Dark blue background */
+  --card: #141827;          /* Card background */
+  --panel: #1a1f35;         /* Panel background */
+  --border: #2a3447;        /* Border color */
+  --text: #e2e8f0;          /* Primary text (white-ish) */
+  --text-secondary: #94a3b8; /* Secondary text (gray) */
+  --muted: #64748b;         /* Muted text */
+  --accent: #3b82f6;        /* Blue accent color */
+  --radius: 12px;           /* Border radius */
+}</code></pre>
+
+        <h4>Why CSS Variables?</h4>
+        <ul>
+            <li><strong>Consistency:</strong> One source of truth for colors</li>
+            <li><strong>Easy Theming:</strong> Change one value, updates everywhere</li>
+            <li><strong>Maintainability:</strong> No hardcoded hex values scattered in code</li>
+            <li><strong>Performance:</strong> Browser-native, no JS required</li>
+        </ul>
+
+        <h3>📱 Responsive Design</h3>
+        <p>Components use flexible layouts:</p>
+        <pre><code>/* Grid layout example */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* Responsive padding */
+@media (max-width: 768px) {
+  main {
+    padding: 24px 16px;
+  }
+}</code></pre>
+
+        <h3>🖱️ Interactive Styles</h3>
+        <p>Hover effects are added inline using React event handlers:</p>
+        <pre><code>&lt;Link 
+  href="/movies" 
+  onMouseEnter={(e) => e.currentTarget.style.background = 'var(--card)'}
+  onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+&gt;
+  Movies
+&lt;/Link&gt;</code></pre>
+
+        <div class="note">
+            <strong>💡 Styling Approach:</strong><br>
+            The project uses inline styles for component-specific styling and global CSS for reusable classes. This is common in Next.js projects where CSS-in-JS libraries aren't needed for simple designs.
+        </div>
+
+        <div class="page-break"></div>
+
+        <!-- SECTION 10: APPLICATION FLOW -->
+        <h2 id="flow">10. Application Flow</h2>
+
+        <h3>🔄 User Journey - New User</h3>
+        <ol>
+            <li><strong>Visit Homepage:</strong> Sees landing hero with welcome message</li>
+            <li><strong>Click Sign Up:</strong> Navigates to <code>/signup</code></li>
+            <li><strong>Fill Registration Form:</strong> Username, email, password</li>
+            <li><strong>Submit Form:</strong> POST to <code>/api/auth/register</code></li>
+            <li><strong>Backend Creates User:</strong> Hashes password, stores in database</li>
+            <li><strong>Receive JWT:</strong> Token returned and stored in localStorage</li>
+            <li><strong>Redirect to Homepage:</strong> Now logged in, sees quick stats</li>
+            <li><strong>Browse Movies:</strong> Can view movies, rate, and see details</li>
+        </ol>
+
+        <h3>🔄 User Journey - Existing User</h3>
+        <ol>
+            <li><strong>Visit Homepage:</strong> Sees login/signup options</li>
+            <li><strong>Click Sign In:</strong> Navigates to <code>/login</code></li>
+            <li><strong>Enter Credentials:</strong> Email and password</li>
+            <li><strong>Backend Validates:</strong> Checks password hash</li>
+            <li><strong>Receive JWT:</strong> Token contains user_id, username, is_admin</li>
+            <li><strong>Token Stored:</strong> localStorage keeps user logged in</li>
+            <li><strong>Access Protected Pages:</strong> Can browse movies, submit ratings</li>
+        </ol>
+
+        <h3>🔄 Admin Journey</h3>
+        <ol>
+            <li><strong>Login as Admin:</strong> JWT contains <code>is_admin: true</code></li>
+            <li><strong>See Admin Link:</strong> Navbar shows "⚙️ Admin"</li>
+            <li><strong>Access Dashboard:</strong> Navigate to <code>/admin</code></li>
+            <li><strong>Choose Operation:</strong> Manage movies, persons, etc.</li>
+            <li><strong>Perform CRUD:</strong> Add/Edit/Delete entities</li>
+            <li><strong>Backend Validates:</strong> <code>authenticateAdmin</code> middleware checks token</li>
+            <li><strong>Data Persisted:</strong> Changes saved to database</li>
+            <li><strong>UI Updates:</strong> Tables refresh showing new data</li>
+        </ol>
+
+        <h3>🔄 Authentication Flow Diagram</h3>
+        <pre><code>┌─────────────┐
+│   Browser   │
+└──────┬──────┘
+       │ 1. User submits login form
+       ▼
+┌─────────────────────────────┐
+│  POST /api/auth/login       │
+│  { email, password }        │
+└──────────┬──────────────────┘
+           │ 2. Request sent
+           ▼
+    ┌──────────────┐
+    │   Backend    │
+    │ - Validate   │
+    │ - Hash check │
+    │ - Generate   │
+    │   JWT        │
+    └──────┬───────┘
+           │ 3. Return token
+           ▼
+    ┌──────────────┐
+    │  Frontend    │
+    │ localStorage │
+    │ .setItem()   │
+    └──────┬───────┘
+           │ 4. Store token
+           ▼
+    ┌──────────────┐
+    │  Redirect    │
+    │  to /        │
+    └──────────────┘</code></pre>
+
+        <h3>🔄 Protected Page Access Flow</h3>
+        <pre><code>User navigates to /movies
+    ↓
+useEffect runs on mount
+    ↓
+Check localStorage for 'token'
+    ↓
+┌───────────────────┬───────────────────┐
+│   Token exists?   │   No token        │
+│   YES             │   ↓               │
+│   ↓               │   Redirect to     │
+│   Fetch movies    │   /login          │
+│   ↓               │                   │
+│   Render page     │                   │
+└───────────────────┴───────────────────┘</code></pre>
+
+        <h3>🔄 Admin CRUD Flow (Example: Add Movie)</h3>
+        <pre><code>1. Admin clicks "Add Movie"
+    ↓
+2. Modal form opens
+    ↓
+3. Admin fills: title, release_date
+    ↓
+4. Form submitted
+    ↓
+5. handleSubmit executes:
+    - Prevents default
+    - Gets token from localStorage
+    - POST to /api/movies
+    - Headers: Authorization: Bearer {token}
+    ↓
+6. Backend authenticateAdmin middleware:
+    - Extracts token
+    - Verifies signature
+    - Queries database for is_admin flag
+    - ✓ Allows if admin
+    - ✗ Returns 403 if not admin
+    ↓
+7. Backend route handler:
+    - Generates movie_id
+    - Inserts into Movie table
+    - Returns success response
+    ↓
+8. Frontend receives response:
+    - Closes modal
+    - Shows success message
+    - Calls fetchMovies() to refresh table
+    ↓
+9. Table updates with new movie</code></pre>
+
+        <div class="page-break"></div>
+
+        <!-- CONCLUSION -->
+        <h2>✅ Summary</h2>
+
+        <h3>Key Takeaways:</h3>
+        <ol>
+            <li><strong>Next.js File-Based Routing:</strong> Files in <code>pages/</code> automatically become routes</li>
+            <li><strong>Client-Side Auth:</strong> JWT stored in localStorage, parsed for user info</li>
+            <li><strong>Protected Routes:</strong> useEffect checks token, redirects if missing</li>
+            <li><strong>Admin Protection:</strong> Double-check on frontend (UI) and backend (API)</li>
+            <li><strong>Component Reusability:</strong> Navbar, Footer, MovieCard used across pages</li>
+            <li><strong>State Management:</strong> React Hooks (useState, useEffect) for local state</li>
+            <li><strong>API Integration:</strong> Fetch API with Bearer token for protected endpoints</li>
+            <li><strong>Consistent Styling:</strong> CSS variables for theme, inline styles for components</li>
+            <li><strong>Modal Pattern:</strong> Admin pages use modals for forms (better UX)</li>
+            <li><strong>Real-Time Calculations:</strong> Profit displayed as user types</li>
+        </ol>
+
+        <h3>Critical Files Reference:</h3>
+        <table>
+            <tr>
+                <th>File</th>
+                <th>Purpose</th>
+            </tr>
+            <tr>
+                <td>pages/_app.js</td>
+                <td>Root wrapper, global CSS import</td>
+            </tr>
+            <tr>
+                <td>utils/auth.js</td>
+                <td>JWT decoding helpers</td>
+            </tr>
+            <tr>
+                <td>components/Navbar.js</td>
+                <td>Navigation with conditional links</td>
+            </tr>
+            <tr>
+                <td>pages/login.js</td>
+                <td>Authentication page</td>
+            </tr>
+            <tr>
+                <td>pages/movies/[id].js</td>
+                <td>Dynamic movie detail page</td>
+            </tr>
+            <tr>
+                <td>pages/admin/index.js</td>
+                <td>Admin dashboard hub</td>
+            </tr>
+            <tr>
+                <td>styles/globals.css</td>
+                <td>Theme variables and global styles</td>
+            </tr>
+        </table>
+
+        <h3>Important Imports Used:</h3>
+        <pre><code>// Next.js Core
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
+import Head from 'next/head'
+
+// Custom Utilities
+import { getUserInfo, isUserAdmin } from '../utils/auth'
+
+// Components
+import Navbar from '../components/Navbar'
+import Footer from '../components/Footer'
+import MovieCard from '../components/MovieCard'</code></pre>
+
+        <div class="success">
+            <strong>🎉 Frontend Complete!</strong><br>
+            The Movie Review System frontend provides a full-featured user experience with authentication, movie browsing, rating submission, person details, reports, and comprehensive admin management capabilities.
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Production Considerations:</strong><br>
+            For production deployment:
+            <ul>
+                <li>Use HTTPS for all API calls</li>
+                <li>Implement proper error boundaries</li>
+                <li>Add loading skeletons for better UX</li>
+                <li>Consider using <code>httpOnly</code> cookies instead of localStorage for tokens</li>
+                <li>Add form validation libraries (e.g., Yup, Zod)</li>
+                <li>Implement rate limiting on API calls</li>
+                <li>Add accessibility features (ARIA labels)</li>
+            </ul>
+        </div>
+
+        <hr style="margin: 40px 0; border: none; border-top: 2px solid var(--border);">
+
+        <p style="text-align: center; color: var(--muted); font-size: 14px;">
+            <strong>End of Frontend Documentation</strong><br>
+            Generated for Movie Review System<br>
+            November 1, 2025
+        </p>
+
+    </div>
+</body>
+</html>

@@ -7,6 +7,8 @@ const authRouter = require('./routes/auth');
 const moviesRouter = require('./routes/movies');
 const ratingsRouter = require('./routes/ratings');
 const personsRouter = require('./routes/persons');
+const genresRouter = require('./routes/genres');
+const revenueRouter = require('./routes/revenue');
 
 dotenv.config();
 
@@ -27,6 +29,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/movies', moviesRouter);
 app.use('/api/ratings', ratingsRouter);
 app.use('/api/persons', personsRouter);
+app.use('/api/genres', genresRouter);
+app.use('/api/revenue', revenueRouter);
 
 // Start server
 app.listen(PORT, () => {

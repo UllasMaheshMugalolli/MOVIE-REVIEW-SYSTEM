@@ -37,6 +37,27 @@ router.post('/', authenticateToken, async (req, res) => {
   }
 });
 
+// GET /api/ratings/movie/:movieId - Get all ratings for a specific movie
+router.get('/movie/:movieId', async (req, res) => {
+  const movie_id = req.params.movieId;
+  
+  try {
+    const [ratings] = await pool.query(
+      `SELECT r.rating_id, r.movie_id, r.user_id, u.username, r.numeric_rating, r.verbal_rating, r.rating_date
+       FROM Rating r
+       JOIN UserTable u ON r.user_id = u.user_id
+       WHERE r.movie_id = ?
+       ORDER BY r.rating_date DESC`,
+      [movie_id]
+    );
+    
+    res.json(ratings);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
 // GET /api/ratings/user - Get all ratings by the logged-in user (PROTECTED)
 router.get('/user', authenticateToken, async (req, res) => {
   const user_id = req.user.user_id;
